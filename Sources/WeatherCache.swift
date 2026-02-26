@@ -3,17 +3,26 @@
 
 import Foundation
 
-// 3. ACTOR CACHE (4 pts)
-// TODO 3.1: Implémenter actor WeatherCache
+actor WeatherCache {
+    private var cache: [String: CurrentWeather] = [:]
+    private var hits = 0
+    private var misses = 0
 
-// actor WeatherCache {
-//     // TODO 3.2: Dictionary cache [String: CurrentWeather]
-//     // TODO 3.3: Compteurs hits et misses
-//
-//     // TODO 3.4: func get(_ cityName: String) -> CurrentWeather?
-//     // Incrémenter hits ou misses selon le cas
-//
-//     // TODO 3.5: func set(_ weather: CurrentWeather, for cityName: String)
-//
-//     // TODO 3.6: func getStats() -> (hits: Int, misses: Int, total: Int)
-// }
+    func get(_ cityName: String) -> CurrentWeather? {
+        if let weather = cache[cityName] {
+            hits += 1
+            return weather
+        } else {
+            misses += 1
+            return nil
+        }
+    }
+
+    func set(_ weather: CurrentWeather, for cityName: String) {
+        cache[cityName] = weather
+    }
+
+    func getStats() -> (hits: Int, misses: Int, total: Int) {
+        return (hits, misses, hits + misses)
+    }
+}
